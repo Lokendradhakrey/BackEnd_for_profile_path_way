@@ -17,7 +17,6 @@ public class Post {
     @Column(name = "post_id")
     private Integer id;
     private String content;
-    private String comment;
     private String file;
 //    @ManyToOne
 //    @JoinColumn(name = "fk_user_id")

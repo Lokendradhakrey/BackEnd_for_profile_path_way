@@ -11,8 +11,8 @@ public class PostDto {
 
     private Integer id;
     private String content;
-    private String comment;
     private String file;
+    private String fileUrl;
 //    private User user;
 //    private List<Comment> comments = new ArrayList<>();
 }
