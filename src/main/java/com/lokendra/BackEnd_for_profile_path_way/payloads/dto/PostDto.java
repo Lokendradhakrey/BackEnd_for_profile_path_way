@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +15,7 @@ public class PostDto {
     private String content;
     private String file;
     private String fileUrl;
+    private Date date;
 //    private User user;
 //    private List<Comment> comments = new ArrayList<>();
 }

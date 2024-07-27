@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto createComment(CommentDto commentDto) {
         Comment comment = this.modelMapper.map(commentDto,Comment.class);
+        comment.setDate(new Date());
         Comment savedComment = this.commentRepo.save(comment);
         return this.modelMapper.map(savedComment, CommentDto.class);
     }

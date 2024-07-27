@@ -14,7 +14,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/profile-path-way/v1/post")
+@RequestMapping("/profile-path-way/v1/post" +
+        "")
 public class PostController {
 
     @Autowired

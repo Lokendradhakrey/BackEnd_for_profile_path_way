@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,42 +38,33 @@ public class PostServiceImpl implements PostService {
         postDto.setFile(uploadedFilename);
         Post post = this.modelMapper.map(postDto, Post.class);
         Post savedPost = this.postRepo.save(post);
-        String fileUrl = baseUrl+"/profile-path-way/v1/file/"+uploadedFilename;
-        return new PostDto(
-                savedPost.getId(),
-                savedPost.getContent(),
-                savedPost.getFile(),
-                fileUrl
-        );
+        String fileUrl = baseUrl + "/profile-path-way/v1/post/" + uploadedFilename;
+        PostDto response = this.modelMapper.map(savedPost, PostDto.class);
+        response.setFileUrl(fileUrl);
+        response.setDate(new Date());
+        return response;
     }
 
     @Override
     public PostDto getPost(Integer postId) {
         Post post = this.postRepo.findById(postId).orElseThrow(() -> new RuntimeException("Post not found with id: " + postId));
-        String fileUrl = baseUrl+"/profile-path-way/v1/file/"+post.getFile();
-        return new PostDto(
-                post.getId(),
-                post.getContent(),
-                post.getFile(),
-                fileUrl
-        );
+        String fileUrl = baseUrl + "/profile-path-way/v1/post/" + post.getFile();
+        PostDto response = this.modelMapper.map(post, PostDto.class);
+        response.setFileUrl(fileUrl);
+        response.setDate(new Date());
+        return response;
     }
 
     @Override
     public List<PostDto> getAllPosts() {
         List<Post> posts = this.postRepo.findAll();
-        List<PostDto> postDtos = new ArrayList<>();
-        for (Post post:posts){
-            String fileUrl = baseUrl + "/profile-path-way/v1/file/" + post.getFile();
-            PostDto postDto = new PostDto(
-                    post.getId(),
-                    post.getContent(),
-                    post.getFile(),
-                    fileUrl
-            );
-            postDtos.add(postDto);
-        }
-        return postDtos;
+        return posts.stream().map(post -> {
+            String fileUrl = baseUrl + "/profile-path-way/v1/post/" + post.getFile();
+            PostDto postDto = this.modelMapper.map(post, PostDto.class);
+            postDto.setFileUrl(fileUrl);
+            postDto.setDate(new Date());
+            return postDto;
+        }).toList();
     }
 
     @Override
