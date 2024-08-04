@@ -25,7 +25,7 @@ public class Comment {
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
-//    @ManyToOne
-//    @JoinColumn(name = "fk_post_id")
-//    private Post post;
+    @ManyToOne
+    @JoinColumn(name = "fk_post_id")
+    private Post post;
 }

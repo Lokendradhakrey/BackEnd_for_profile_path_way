@@ -14,17 +14,16 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/profile-path-way/v1/post" +
-        "")
+@RequestMapping("/profile-path-way/v1/post")
 public class PostController {
 
     @Autowired
     private PostService postService;
 
-    @PostMapping("/create-post")
-    public ResponseEntity<PostDto> createPost(@RequestPart MultipartFile file, @RequestPart String postDto) throws IOException {
+    @PostMapping("/user/{userId}/create-post")
+    public ResponseEntity<PostDto> createPost(@RequestPart MultipartFile file, @RequestPart String postDto, @PathVariable Integer userId) throws IOException {
         PostDto dto = convertToPostDto(postDto);
-        PostDto savedPostDto = this.postService.createPost(dto, file);
+        PostDto savedPostDto = this.postService.createPost(dto, file, userId);
         return new ResponseEntity<>(savedPostDto, HttpStatus.CREATED);
     }
 

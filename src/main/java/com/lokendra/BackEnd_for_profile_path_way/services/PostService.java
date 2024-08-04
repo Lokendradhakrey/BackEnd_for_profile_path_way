@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PostService {
 
-    PostDto createPost(PostDto postDto, MultipartFile file) throws IOException;
+    PostDto createPost(PostDto postDto, MultipartFile file, Integer userId) throws IOException;
     PostDto getPost(Integer postId);
     List<PostDto> getAllPosts();
     void deletePost(Integer postId) throws IOException;

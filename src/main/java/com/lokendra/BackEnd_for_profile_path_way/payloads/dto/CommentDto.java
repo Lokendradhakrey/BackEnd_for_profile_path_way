@@ -14,5 +14,4 @@ public class CommentDto {
     private Integer id;
     private String content;
     private Date date;
-//    private Post post;
 }

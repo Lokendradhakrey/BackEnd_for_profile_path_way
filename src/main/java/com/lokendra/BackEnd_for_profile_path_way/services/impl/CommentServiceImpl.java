@@ -1,8 +1,10 @@
 package com.lokendra.BackEnd_for_profile_path_way.services.impl;
 
 import com.lokendra.BackEnd_for_profile_path_way.entities.Comment;
+import com.lokendra.BackEnd_for_profile_path_way.entities.Post;
 import com.lokendra.BackEnd_for_profile_path_way.payloads.dto.CommentDto;
 import com.lokendra.BackEnd_for_profile_path_way.repositories.CommentRepo;
+import com.lokendra.BackEnd_for_profile_path_way.repositories.PostRepo;
 import com.lokendra.BackEnd_for_profile_path_way.services.CommentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,15 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private CommentRepo commentRepo;
     @Autowired
+    private PostRepo postRepo;
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override
-    public CommentDto createComment(CommentDto commentDto) {
+    public CommentDto createComment(CommentDto commentDto, Integer postId) {
         Comment comment = this.modelMapper.map(commentDto,Comment.class);
+        Post post = this.postRepo.findById(postId).orElseThrow(()-> new RuntimeException("Post not found with id: "+postId));
+        comment.setPost(post);
         comment.setDate(new Date());
         Comment savedComment = this.commentRepo.save(comment);
         return this.modelMapper.map(savedComment, CommentDto.class);

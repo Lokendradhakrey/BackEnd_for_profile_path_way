@@ -31,9 +31,9 @@ public class Post {
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
-//    @ManyToOne
-//    @JoinColumn(name = "fk_user_id")
-//    private User user;
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-//    private List<Comment> comments = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "fk_user_id")
+    private User user;
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
 }
