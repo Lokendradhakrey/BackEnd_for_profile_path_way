@@ -2,15 +2,19 @@ This repository is containing restAPIs for a project named as profilePathWay. Th
 Used TECH STACK :-- 
 
 For fornt-end
-HTML
-CSS
-JS
-REACTJS
+
+
+HTML,
+CSS,
+JS,
+REACTJS,
 BOOTSTRAP
 
 For back-end
-JAVA
-OOP's CONCEPT
-SPRING BOOT 
-MYSQL
+
+
+JAVA,
+OOP's CONCEPT,
+SPRING BOOT,
+MYSQL,
 MAVEN
