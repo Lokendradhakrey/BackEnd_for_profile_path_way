@@ -17,8 +17,11 @@ import java.util.List;
 @RequestMapping("/profile-path-way/v1/post")
 public class PostController {
 
-    @Autowired
     private PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     @PostMapping("/user/{userId}/create-post")
     public ResponseEntity<PostDto> createPost(@RequestPart MultipartFile file, @RequestPart String postDto, @PathVariable Integer userId) throws IOException {

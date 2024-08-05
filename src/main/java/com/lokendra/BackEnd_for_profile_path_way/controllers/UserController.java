@@ -8,13 +8,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/profile-path-way/v1/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/create-user")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
@@ -37,6 +41,12 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> getUser(@PathVariable Integer userId) {
         UserDto user = this.userService.getUser(userId);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/username")
+    public ResponseEntity<Optional<UserDto>> getByUsername(@RequestPart String username) {
+        Optional<UserDto> user = this.userService.getByUsername(username);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

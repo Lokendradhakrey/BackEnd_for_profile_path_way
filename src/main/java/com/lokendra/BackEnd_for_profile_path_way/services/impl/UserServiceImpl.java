@@ -9,14 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private UserRepo userRepo;
+    private final ModelMapper modelMapper;
+    private final UserRepo userRepo;
+
+    public UserServiceImpl(UserRepo userRepo, ModelMapper modelMapper) {
+        this.userRepo = userRepo;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -53,5 +57,17 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getAllUsers() {
         List<User> users = this.userRepo.findAll();
         return users.stream().map(user -> this.modelMapper.map(user, UserDto.class)).toList();
+    }
+
+    @Override
+    public Optional<UserDto> getByUsername(String username) {
+        Optional<User> user = this.userRepo.findByUsername(username);
+        List<UserDto> allUsers = getAllUsers();
+        for (UserDto userDto : allUsers) {
+            if (userDto.getUsername().equals(username)) {
+                return Optional.of(userDto);
+            }
+        }
+        return Optional.empty();
     }
 }

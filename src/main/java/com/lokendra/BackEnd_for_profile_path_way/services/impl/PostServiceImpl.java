@@ -23,14 +23,18 @@ import java.util.List;
 @Service
 public class PostServiceImpl implements PostService {
 
-    @Autowired
-    private PostRepo postRepo;
-    @Autowired
-    private UserRepo userRepo;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private FileService fileService;
+    private final PostRepo postRepo;
+    private final UserRepo userRepo;
+    private final ModelMapper modelMapper;
+    private final FileService fileService;
+
+    public PostServiceImpl(PostRepo postRepo, UserRepo userRepo, ModelMapper modelMapper, FileService fileService) {
+        this.postRepo = postRepo;
+        this.userRepo = userRepo;
+        this.modelMapper = modelMapper;
+        this.fileService = fileService;
+    }
+
     @Value("${project.file}")
     private String path;
     @Value("${base.url}")

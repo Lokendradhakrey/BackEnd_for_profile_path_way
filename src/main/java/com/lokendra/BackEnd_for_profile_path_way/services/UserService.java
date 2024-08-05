@@ -3,6 +3,7 @@ package com.lokendra.BackEnd_for_profile_path_way.services;
 import com.lokendra.BackEnd_for_profile_path_way.payloads.dto.UserDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -11,4 +12,5 @@ public interface UserService {
     void deleteUser(Integer userId);
     UserDto getUser(Integer userId);
     List<UserDto> getAllUsers();
+    Optional<UserDto> getByUsername(String username);
 }

@@ -38,6 +38,6 @@ public class User {
     @NotNull(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
 }

@@ -13,8 +13,11 @@ import java.util.List;
 @RequestMapping("/profile-path-way/v1/comment")
 public class CommentController {
 
-    @Autowired
-    private CommentService commentService;
+    private final CommentService commentService;
+
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @PostMapping("post/{postId}/create-comment")
     public ResponseEntity<CommentDto> createComment(@RequestBody CommentDto commentDto, @PathVariable Integer postId){

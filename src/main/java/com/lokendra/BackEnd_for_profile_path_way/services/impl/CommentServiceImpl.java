@@ -16,12 +16,15 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    @Autowired
-    private CommentRepo commentRepo;
-    @Autowired
-    private PostRepo postRepo;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final CommentRepo commentRepo;
+    private final PostRepo postRepo;
+    private final ModelMapper modelMapper;
+
+    public CommentServiceImpl(CommentRepo commentRepo, PostRepo postRepo, ModelMapper modelMapper) {
+        this.commentRepo = commentRepo;
+        this.postRepo = postRepo;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public CommentDto createComment(CommentDto commentDto, Integer postId) {
