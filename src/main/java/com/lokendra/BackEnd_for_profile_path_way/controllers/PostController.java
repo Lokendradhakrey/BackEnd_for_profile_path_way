@@ -2,6 +2,7 @@ package com.lokendra.BackEnd_for_profile_path_way.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lokendra.BackEnd_for_profile_path_way.Exceptions.ResourceNotFoundExceptionHandle;
 import com.lokendra.BackEnd_for_profile_path_way.payloads.dto.PostDto;
 import com.lokendra.BackEnd_for_profile_path_way.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class PostController {
     }
 
     @PostMapping("/user/{userId}/create-post")
-    public ResponseEntity<PostDto> createPost(@RequestPart MultipartFile file, @RequestPart String postDto, @PathVariable Integer userId) throws IOException {
+    public ResponseEntity<PostDto> createPost(@RequestPart MultipartFile file, @RequestPart String postDto, @PathVariable Integer userId) throws IOException, ResourceNotFoundExceptionHandle {
         PostDto dto = convertToPostDto(postDto);
         PostDto savedPostDto = this.postService.createPost(dto, file, userId);
         return new ResponseEntity<>(savedPostDto, HttpStatus.CREATED);
@@ -37,7 +38,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostDto> getPost(@PathVariable Integer postId){
+    public ResponseEntity<PostDto> getPost(@PathVariable Integer postId) throws ResourceNotFoundExceptionHandle {
         PostDto postDto = this.postService.getPost(postId);
         return ResponseEntity.ok(postDto);
     }
@@ -49,7 +50,7 @@ public class PostController {
     }
 
     @DeleteMapping("/delete-post/{postId}")
-    public ResponseEntity<?> deletePost(@PathVariable Integer postId) throws IOException {
+    public ResponseEntity<?> deletePost(@PathVariable Integer postId) throws IOException, ResourceNotFoundExceptionHandle {
         this.postService.deletePost(postId);
         return ResponseEntity.ok("Post deleted successfully with id: "+postId);
     }

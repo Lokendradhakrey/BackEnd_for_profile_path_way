@@ -1,5 +1,6 @@
 package com.lokendra.BackEnd_for_profile_path_way.services.impl;
 
+import com.lokendra.BackEnd_for_profile_path_way.Exceptions.ResourceNotFoundExceptionHandle;
 import com.lokendra.BackEnd_for_profile_path_way.entities.Post;
 import com.lokendra.BackEnd_for_profile_path_way.entities.User;
 import com.lokendra.BackEnd_for_profile_path_way.payloads.dto.PostDto;
@@ -41,11 +42,11 @@ public class PostServiceImpl implements PostService {
     private String baseUrl;
 
     @Override
-    public PostDto createPost(PostDto postDto, MultipartFile file, Integer userId) throws IOException {
+    public PostDto createPost(PostDto postDto, MultipartFile file, Integer userId) throws IOException, ResourceNotFoundExceptionHandle {
         String uploadedFilename = fileService.uploadFile(path, file);
         postDto.setFile(uploadedFilename);
         Post post = this.modelMapper.map(postDto, Post.class);
-        User user = this.userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundExceptionHandle("User", "id", userId));
         post.setUser(user);
         post.setDate(new Date());
         Post savedPost = this.postRepo.save(post);
@@ -56,8 +57,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDto getPost(Integer postId) {
-        Post post = this.postRepo.findById(postId).orElseThrow(() -> new RuntimeException("Post not found with id: " + postId));
+    public PostDto getPost(Integer postId) throws ResourceNotFoundExceptionHandle {
+        Post post = this.postRepo.findById(postId).orElseThrow(() -> new ResourceNotFoundExceptionHandle("Post", "id", postId));
         String fileUrl = baseUrl + "/profile-path-way/v1/post/" + post.getFile();
         PostDto response = this.modelMapper.map(post, PostDto.class);
         response.setFileUrl(fileUrl);
@@ -78,8 +79,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(Integer postId) throws IOException {
-        Post post = this.postRepo.findById(postId).orElseThrow(() -> new RuntimeException("Post not found with id: " + postId));
+    public void deletePost(Integer postId) throws IOException, ResourceNotFoundExceptionHandle {
+        Post post = this.postRepo.findById(postId).orElseThrow(() -> new ResourceNotFoundExceptionHandle("Post", "id", postId));
         Files.deleteIfExists(Paths.get(path + File.separator + post.getFile()));
         this.postRepo.delete(post);
     }

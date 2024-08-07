@@ -1,5 +1,6 @@
 package com.lokendra.BackEnd_for_profile_path_way.services.impl;
 
+import com.lokendra.BackEnd_for_profile_path_way.Exceptions.ResourceNotFoundExceptionHandle;
 import com.lokendra.BackEnd_for_profile_path_way.entities.Comment;
 import com.lokendra.BackEnd_for_profile_path_way.entities.Post;
 import com.lokendra.BackEnd_for_profile_path_way.payloads.dto.CommentDto;
@@ -27,9 +28,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto createComment(CommentDto commentDto, Integer postId) {
+    public CommentDto createComment(CommentDto commentDto, Integer postId) throws ResourceNotFoundExceptionHandle {
         Comment comment = this.modelMapper.map(commentDto,Comment.class);
-        Post post = this.postRepo.findById(postId).orElseThrow(()-> new RuntimeException("Post not found with id: "+postId));
+        Post post = this.postRepo.findById(postId).orElseThrow(() -> new ResourceNotFoundExceptionHandle("Post", "id", postId));
         comment.setPost(post);
         comment.setDate(new Date());
         Comment savedComment = this.commentRepo.save(comment);
@@ -37,22 +38,22 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto updateComment(CommentDto commentDto, Integer commentId) {
-        Comment comment = this.commentRepo.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found with id: " + commentId));
+    public CommentDto updateComment(CommentDto commentDto, Integer commentId) throws ResourceNotFoundExceptionHandle {
+        Comment comment = this.commentRepo.findById(commentId).orElseThrow(() -> new ResourceNotFoundExceptionHandle("Comment", "id", commentId));
         comment.setContent(commentDto.getContent());
         Comment updatedComment = this.commentRepo.save(comment);
         return this.modelMapper.map(updatedComment, CommentDto.class);
     }
 
     @Override
-    public void deleteComment(Integer commentId) {
-        Comment comment = this.commentRepo.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found with id: " + commentId));
+    public void deleteComment(Integer commentId) throws ResourceNotFoundExceptionHandle {
+        Comment comment = this.commentRepo.findById(commentId).orElseThrow(() -> new ResourceNotFoundExceptionHandle("Comment", "id", commentId));
         this.commentRepo.delete(comment);
     }
 
     @Override
-    public CommentDto getComment(Integer commentId) {
-        Comment comment = this.commentRepo.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found with id: " + commentId));
+    public CommentDto getComment(Integer commentId) throws ResourceNotFoundExceptionHandle {
+        Comment comment = this.commentRepo.findById(commentId).orElseThrow(() -> new ResourceNotFoundExceptionHandle("Comment", "id", commentId));
         return this.modelMapper.map(comment, CommentDto.class);
     }
 

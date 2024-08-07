@@ -1,5 +1,6 @@
 package com.lokendra.BackEnd_for_profile_path_way.services.impl;
 
+import com.lokendra.BackEnd_for_profile_path_way.Exceptions.ResourceNotFoundExceptionHandle;
 import com.lokendra.BackEnd_for_profile_path_way.entities.User;
 import com.lokendra.BackEnd_for_profile_path_way.payloads.dto.UserDto;
 import com.lokendra.BackEnd_for_profile_path_way.repositories.UserRepo;
@@ -30,8 +31,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(UserDto userDto, Integer userId) {
-        User user = this.userRepo.findById(userId).orElseThrow(() -> new RuntimeException("user not found with userId: " + userId));
+    public UserDto updateUser(UserDto userDto, Integer userId) throws ResourceNotFoundExceptionHandle {
+        User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundExceptionHandle("User", "id", userId));
         user.setFullName(userDto.getFullName());
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
@@ -41,14 +42,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Integer userId) {
-        User user = this.userRepo.findById(userId).orElseThrow(() -> new RuntimeException("user not found with userId: " + userId));
+    public void deleteUser(Integer userId) throws ResourceNotFoundExceptionHandle {
+        User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundExceptionHandle("User", "id", userId));
         this.userRepo.delete(user);
     }
 
     @Override
-    public UserDto getUser(Integer userId) {
-        User user = this.userRepo.findById(userId).orElseThrow(() -> new RuntimeException("user not found with userId: " + userId));
+    public UserDto getUser(Integer userId) throws ResourceNotFoundExceptionHandle {
+        User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundExceptionHandle("User", "id", userId));
 
         return this.modelMapper.map(user, UserDto.class);
     }
