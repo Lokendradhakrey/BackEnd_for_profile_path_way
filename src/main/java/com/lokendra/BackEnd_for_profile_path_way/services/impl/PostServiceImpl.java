@@ -50,7 +50,7 @@ public class PostServiceImpl implements PostService {
         post.setUser(user);
         post.setDate(new Date());
         Post savedPost = this.postRepo.save(post);
-        String fileUrl = baseUrl + "/profile-path-way/v1/post/" + uploadedFilename;
+        String fileUrl = baseUrl + "/profile-path-way/v1/img/" + uploadedFilename;
         PostDto response = this.modelMapper.map(savedPost, PostDto.class);
         response.setFileUrl(fileUrl);
         return response;
@@ -59,7 +59,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto getPost(Integer postId) throws ResourceNotFoundExceptionHandle {
         Post post = this.postRepo.findById(postId).orElseThrow(() -> new ResourceNotFoundExceptionHandle("Post", "id", postId));
-        String fileUrl = baseUrl + "/profile-path-way/v1/post/" + post.getFile();
+        String fileUrl = baseUrl + "/profile-path-way/v1/img/" + post.getFile();
         PostDto response = this.modelMapper.map(post, PostDto.class);
         response.setFileUrl(fileUrl);
         response.setDate(new Date());
@@ -70,7 +70,7 @@ public class PostServiceImpl implements PostService {
     public List<PostDto> getAllPosts() {
         List<Post> posts = this.postRepo.findAll();
         return posts.stream().map(post -> {
-            String fileUrl = baseUrl + "/profile-path-way/v1/post/" + post.getFile();
+            String fileUrl = baseUrl + "/profile-path-way/v1/img/" + post.getFile();
             PostDto postDto = this.modelMapper.map(post, PostDto.class);
             postDto.setFileUrl(fileUrl);
             postDto.setDate(new Date());
