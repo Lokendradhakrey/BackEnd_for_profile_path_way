@@ -7,6 +7,7 @@ import com.lokendra.BackEnd_for_profile_path_way.repositories.UserRepo;
 import com.lokendra.BackEnd_for_profile_path_way.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +18,12 @@ public class UserServiceImpl implements UserService {
 
     private final ModelMapper modelMapper;
     private final UserRepo userRepo;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepo userRepo, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepo userRepo, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -36,7 +39,7 @@ public class UserServiceImpl implements UserService {
         user.setFullName(userDto.getFullName());
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User updatedUser = this.userRepo.save(user);
         return this.modelMapper.map(updatedUser, UserDto.class);
     }
