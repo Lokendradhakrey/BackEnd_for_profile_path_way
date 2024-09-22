@@ -42,11 +42,11 @@ public class UserAuthService {
         User savedUser = userRepo.save(user);
         var accessToken = jwtUtilService.generateToken(savedUser);
         var refreshToken = refreshTokenService.createRefreshToken(savedUser.getUsername());
-        var username = savedUser.getUsername();
+        var fullName = savedUser.getFullName();
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())
-                .username(username)
+                .fullName(fullName)
                 .build();
     }
 
@@ -60,12 +60,12 @@ public class UserAuthService {
         var user = userRepo.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found "));
         var accessToken = jwtUtilService.generateToken(user);
         var refreshToken = refreshTokenService.createRefreshToken(loginRequest.getUsername());
-        var username = user.getUsername();
+        var fullName = user.getFullName();
 
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())
-                .username(username)
+                .fullName(fullName)
                 .build();
     }
 }
