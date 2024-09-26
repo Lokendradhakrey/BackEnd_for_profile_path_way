@@ -25,7 +25,7 @@ public class RefreshTokenService {
         User user = this.userRepo.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found with this username"));
         RefreshToken refreshToken = user.getRefreshToken();
         if (refreshToken == null) {
-            long refreshTokenValidity = 60 * 1000;
+            long refreshTokenValidity = 60 * 60 * 1000;
             refreshToken = RefreshToken.builder()
                     .refreshToken(UUID.randomUUID().toString())
                     .expirationTime(Instant.now().plusMillis(refreshTokenValidity))
