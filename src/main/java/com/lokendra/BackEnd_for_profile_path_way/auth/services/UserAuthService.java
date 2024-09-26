@@ -43,10 +43,12 @@ public class UserAuthService {
         var accessToken = jwtUtilService.generateToken(savedUser);
         var refreshToken = refreshTokenService.createRefreshToken(savedUser.getUsername());
         var fullName = savedUser.getFullName();
+        var userId = savedUser.getId();
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())
                 .fullName(fullName)
+                .userId(userId)
                 .build();
     }
 
@@ -61,11 +63,13 @@ public class UserAuthService {
         var accessToken = jwtUtilService.generateToken(user);
         var refreshToken = refreshTokenService.createRefreshToken(loginRequest.getUsername());
         var fullName = user.getFullName();
+        var userId = user.getId();
 
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())
                 .fullName(fullName)
+                .userId(userId)
                 .build();
     }
 }

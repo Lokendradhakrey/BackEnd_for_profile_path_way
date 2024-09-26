@@ -15,5 +15,7 @@ public class AuthResponse {
 
     private String refreshToken;
 
+    private Integer userId;
+
     private String fullName;
 }
