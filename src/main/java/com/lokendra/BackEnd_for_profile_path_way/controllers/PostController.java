@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lokendra.BackEnd_for_profile_path_way.Exceptions.ResourceNotFoundExceptionHandle;
 import com.lokendra.BackEnd_for_profile_path_way.payloads.dto.PostDto;
 import com.lokendra.BackEnd_for_profile_path_way.services.PostService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +23,14 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping("/user/{userId}/create-post")
-    public ResponseEntity<PostDto> createPost(@RequestPart MultipartFile file, @RequestPart String postDto, @PathVariable Integer userId) throws IOException, ResourceNotFoundExceptionHandle {
-        PostDto dto = convertToPostDto(postDto);
+    @PostMapping("/create-post/user/{userId}")
+    public ResponseEntity<PostDto> createPost(@RequestPart MultipartFile file, @RequestPart String content, @PathVariable Integer userId) throws IOException, ResourceNotFoundExceptionHandle {
+        PostDto dto = convertToPostDto(content);
         PostDto savedPostDto = this.postService.createPost(dto, file, userId);
         return new ResponseEntity<>(savedPostDto, HttpStatus.CREATED);
     }
 
     private PostDto convertToPostDto(String postDtoObj) throws JsonProcessingException {
-        PostDto postDto = new PostDto();
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(postDtoObj, PostDto.class);
     }

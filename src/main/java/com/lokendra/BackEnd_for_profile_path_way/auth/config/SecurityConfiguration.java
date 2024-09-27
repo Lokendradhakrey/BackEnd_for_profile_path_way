@@ -40,7 +40,7 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth-> auth
-                        .requestMatchers("/profile-path-way/v1/auth/**","/profile-path-way/v1/post/all-posts", "/profile-path-way/v1/img/**")
+                        .requestMatchers("/profile-path-way/v1/auth/**","/profile-path-way/v1/post/all-posts", "/profile-path-way/v1/post/create-post/**", "/profile-path-way/v1/img/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
